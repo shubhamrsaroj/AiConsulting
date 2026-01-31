@@ -68,7 +68,7 @@ const CyberContact = () => {
     };
 
     return (
-        <section id="contacts" className="relative py-32 px-10 bg-cyber-black overflow-hidden font-rajdhani">
+        <section id="contacts" className="relative py-16 px-4 md:py-32 md:px-10 bg-cyber-black overflow-hidden font-rajdhani">
             {/* Background elements */}
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon-purple/10 blur-[120px] rounded-full pointer-events-none"></div>
 

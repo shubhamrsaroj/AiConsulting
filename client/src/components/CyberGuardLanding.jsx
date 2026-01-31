@@ -3,14 +3,16 @@ import robotImg from '../assets/cyber_robot.png';
 import CyberServices from './CyberServices';
 import CyberContact from './CyberContact';
 import { CyberAudioProvider, useCyberAudio } from './CyberAudio';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Inner component to use the hook
 const CyberGuardContent = () => {
     const { playSfx } = useCyberAudio();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const scrollToSection = (id) => {
         playSfx('click');
+        setIsMenuOpen(false); // Close menu on click
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
@@ -38,7 +40,7 @@ const CyberGuardContent = () => {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: 'easeOut' }}
-                className="fixed top-0 w-full z-50 flex justify-between items-center px-10 py-6 bg-cyber-black/80 backdrop-blur-md border-b border-white/5"
+                className="fixed top-0 w-full z-50 flex justify-between items-center px-4 md:px-10 py-4 md:py-6 bg-cyber-black/80 backdrop-blur-md border-b border-white/5"
             >
                 <div
                     className="text-2xl font-orbitron font-bold tracking-widest text-white flex items-center gap-2 cursor-pointer"
@@ -73,12 +75,64 @@ const CyberGuardContent = () => {
                         className="hover:text-neon-cyan transition-colors uppercase"
                     >Contacts</button>
                 </div>
+
+                {/* Mobile Hamburger Button */}
+                <button
+                    className="md:hidden text-white p-2"
+                    onClick={() => { playSfx('click'); setIsMenuOpen(!isMenuOpen); }}
+                >
+                    <div className="space-y-2">
+                        <motion.div
+                            animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                            className="w-8 h-0.5 bg-neon-cyan origin-center"
+                        />
+                        <motion.div
+                            animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                            className="w-8 h-0.5 bg-neon-cyan"
+                        />
+                        <motion.div
+                            animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                            className="w-8 h-0.5 bg-neon-cyan origin-center"
+                        />
+                    </div>
+                </button>
             </motion.nav>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="fixed inset-0 z-40 bg-cyber-black/95 backdrop-blur-xl md:hidden flex flex-col items-center justify-center space-y-8 pt-20"
+                    >
+                        <button
+                            onClick={() => scrollToSection('services')}
+                            className="text-2xl font-orbitron font-bold text-white hover:text-neon-cyan tracking-widest uppercase"
+                        >
+                            Services
+                        </button>
+                        <button
+                            onClick={() => scrollToSection('about')}
+                            className="text-2xl font-orbitron font-bold text-white hover:text-neon-cyan tracking-widest uppercase"
+                        >
+                            About
+                        </button>
+                        <button
+                            onClick={() => scrollToSection('contacts')}
+                            className="text-2xl font-orbitron font-bold text-white hover:text-neon-cyan tracking-widest uppercase"
+                        >
+                            Contacts
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Main Content */}
             <main className="relative z-10">
                 {/* HERO SECTION */}
-                <section className="flex flex-col md:flex-row items-center justify-between px-10 min-h-screen pt-20">
+                <section className="flex flex-col md:flex-row items-center justify-between px-4 md:px-10 min-h-screen pt-24 md:pt-20">
                     {/* Left Text */}
                     <div className="flex-1 space-y-8 mt-10 md:mt-0 relative">
                         {/* Text Glitch Effect Layer */}
@@ -173,7 +227,7 @@ const CyberGuardContent = () => {
             </main>
 
             {/* Footer / Bottom Bar - now relative to bottom of page content, or could be fixed/sticky if preferred, keeping as relative footer */}
-            <footer className="w-full flex justify-between items-end px-10 py-6 border-t border-white/5 bg-black font-mono text-sm text-neon-cyan">
+            <footer className="w-full flex justify-between items-end px-4 md:px-10 py-6 border-t border-white/5 bg-black font-mono text-sm text-neon-cyan">
                 <div className="border border-neon-purple/30 rounded-full px-6 py-2">
                     <span className="text-white">AI</span>CONSULT © 2024
                 </div>

@@ -40,7 +40,7 @@ const ContactForm = () => {
     return (
         <section id="contact" className="py-20 relative">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="glass-card p-10">
+                <div className="glass-card p-6 md:p-10">
                     <h2 className="text-3xl font-bold text-center mb-8 text-white">Get In Touch</h2>
 
                     {status === 'success' && (

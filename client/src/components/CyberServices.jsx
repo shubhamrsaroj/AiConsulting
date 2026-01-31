@@ -40,7 +40,7 @@ const CyberServices = () => {
     ];
 
     return (
-        <section id="services" className="relative py-32 px-10 bg-dark-bg overflow-hidden">
+        <section id="services" className="relative py-16 px-4 md:py-32 md:px-10 bg-dark-bg overflow-hidden">
             {/* Background elements */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-neon-cyan/5 blur-[150px] rounded-full pointer-events-none"></div>
 
