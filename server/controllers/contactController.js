@@ -1,5 +1,4 @@
 import Contact from '../models/Contact.js';
-import Contact from '../models/Contact.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
