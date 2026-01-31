@@ -142,7 +142,7 @@ const CyberGuardContent = () => {
                             initial={{ x: -100, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 1, delay: 0.5 }}
-                            className="text-6xl md:text-8xl font-orbitron font-medium leading-none uppercase relative"
+                            className="text-3xl sm:text-4xl md:text-8xl font-orbitron font-medium leading-none uppercase relative"
                         >
                             Future of <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Intelligent</span> <br />
