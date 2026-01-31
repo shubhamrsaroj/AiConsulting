@@ -1,26 +1,8 @@
 import Contact from '../models/Contact.js';
-import nodemailer from 'nodemailer';
+import Contact from '../models/Contact.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-// Configure Nodemailer Transporter
-// Configure Nodemailer Transporter
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports (upgrades to TLS)
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    tls: {
-        rejectUnauthorized: false // Helps if server has certificate issues
-    },
-    logger: true, // Log specific transaction details
-    debug: true, // Include SMTP traffic in logs
-    connectionTimeout: 30000 // 30 seconds
-});
 
 export const submitContactForm = async (req, res) => {
     try {
