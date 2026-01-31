@@ -29,19 +29,29 @@ const CyberContact = () => {
         const PUBLIC_KEY = 'THP0F2_XlcYMowhAC';
 
         try {
-            // Using sendForm to automatically handle the form data
-            // Note: Make sure input "name" attributes match your EmailJS template variables
-            await emailjs.send(
+            // 1. Send Email via EmailJS (Frontend)
+            const emailPromise = emailjs.send(
                 SERVICE_ID,
                 TEMPLATE_ID,
                 {
-                    from_name: formData.name,
-                    from_email: formData.email,
+                    name: formData.name,
+                    email: formData.email,
                     message: formData.message,
                     to_name: "Admin"
                 },
                 PUBLIC_KEY
             );
+
+            // 2. Save to Database via Backend API
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const dbPromise = fetch(`${apiUrl}/api/contact`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            // Wait for both (email is priority for user feedback, but we want DB save too)
+            await Promise.all([emailPromise, dbPromise]);
 
             // Success handling
             setTimeout(() => {

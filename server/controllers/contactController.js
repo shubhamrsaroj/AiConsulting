@@ -34,38 +34,11 @@ export const submitContactForm = async (req, res) => {
         const newContact = new Contact({ name, email, message });
         await newContact.save();
 
-        // Send Email Notification
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER, // Sending to yourself/admin
-            subject: `New Contact Form Submission from ${name}`,
-            text: `
-        You have a new message from your website:
-        
-        Name: ${name}
-        Email: ${email}
-        Message: ${message}
-      `,
-            html: `
-        <h3>New Contact Form Submission</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong> ${message}</p>
-      `
-        };
+        // Send Email Notification - REMOVED
+        // We now handle emails on the frontend using EmailJS to avoid server-side SMTP issues.
+        // The backend is solely responsible for saving the contact to MongoDB.
 
-        // Attempt to send email, but don't block response if it fails (or handle as needed)
-        try {
-            if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-                await transporter.sendMail(mailOptions);
-                console.log('Email notification sent');
-            } else {
-                console.log('Email credentials not found, skipping email notification.');
-            }
-        } catch (emailError) {
-            console.error('Error sending email:', emailError);
-            // Continue to send success response to user even if email fails
-        }
+        console.log('Contact saved to MongoDB');
 
         res.status(201).json({ message: 'Message sent successfully!' });
     } catch (error) {
