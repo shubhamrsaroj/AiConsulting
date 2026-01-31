@@ -5,12 +5,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Configure Nodemailer Transporter
+// Configure Nodemailer Transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use other services or generic SMTP
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-    }
+    },
+    connectionTimeout: 10000 // 10 seconds
 });
 
 export const submitContactForm = async (req, res) => {
