@@ -8,13 +8,18 @@ dotenv.config();
 // Configure Nodemailer Transporter
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use SSL
+    port: 587,
+    secure: false, // true for 465, false for other ports (upgrades to TLS)
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    connectionTimeout: 10000 // 10 seconds
+    tls: {
+        rejectUnauthorized: false // Helps if server has certificate issues
+    },
+    logger: true, // Log specific transaction details
+    debug: true, // Include SMTP traffic in logs
+    connectionTimeout: 30000 // 30 seconds
 });
 
 export const submitContactForm = async (req, res) => {
