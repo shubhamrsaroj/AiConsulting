@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCyberAudio } from './CyberAudio';
+import emailjs from '@emailjs/browser';
 
 const CyberContact = () => {
     const { playSfx } = useCyberAudio();
+    const formRef = useRef();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -20,29 +22,36 @@ const CyberContact = () => {
         playSfx('click');
         setStatus('sending');
 
-        try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/api/contact`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+        // EmailJS Configuration
+        // Replace these with your actual IDs from EmailJS Dashboard
+        const SERVICE_ID = 'service_lhn9ja8';
+        const TEMPLATE_ID = 'template_axstext';
+        const PUBLIC_KEY = 'THP0F2_XlcYMowhAC';
 
-            if (response.ok) {
-                // Fake delay to show off animation
-                setTimeout(() => {
-                    setStatus('success');
-                    playSfx('success');
-                    setFormData({ name: '', email: '', message: '' });
-                }, 2000);
-            } else {
-                setStatus('error');
-                playSfx('error');
-            }
+        try {
+            // Using sendForm to automatically handle the form data
+            // Note: Make sure input "name" attributes match your EmailJS template variables
+            await emailjs.send(
+                SERVICE_ID,
+                TEMPLATE_ID,
+                {
+                    from_name: formData.name,
+                    from_email: formData.email,
+                    message: formData.message,
+                    to_name: "Admin"
+                },
+                PUBLIC_KEY
+            );
+
+            // Success handling
+            setTimeout(() => {
+                setStatus('success');
+                playSfx('success');
+                setFormData({ name: '', email: '', message: '' });
+            }, 2000);
+
         } catch (error) {
-            console.error('Error:', error);
+            console.error('EmailJS Error:', error);
             setStatus('error');
             playSfx('error');
         }
