@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCyberAudio } from './CyberAudio';
 import emailjs from '@emailjs/browser';
 
 const CyberContact = () => {
+    const { playSfx } = useCyberAudio();
     const formRef = useRef();
     const [formData, setFormData] = useState({
         name: '',
@@ -17,6 +19,7 @@ const CyberContact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        playSfx('click');
         setStatus('sending');
 
         // EmailJS Configuration
@@ -50,6 +53,7 @@ const CyberContact = () => {
             await Promise.all([emailPromise, dbPromise]);
 
             setStatus('success');
+            playSfx('success');
             setFormData({ name: '', email: '', message: '' });
 
             // Reset status after 3 seconds
@@ -60,6 +64,7 @@ const CyberContact = () => {
         } catch (error) {
             console.error('EmailJS/DB Error:', error);
             setStatus('error');
+            playSfx('error');
             setTimeout(() => setStatus(''), 5000);
         }
     };
